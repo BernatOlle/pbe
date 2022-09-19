@@ -1,1 +1,1 @@
-print("Holam");
+print("Hoam");
