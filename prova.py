@@ -1,6 +1,7 @@
 import gi
 
 gi.require_version("Gtk", "3.0")
+from puzzle1 import LCD
 from gi.repository import Gtk, Pango
 
 
@@ -39,9 +40,10 @@ class TextViewWindow(Gtk.Window):
         scrolledwindow.add(self.textview)
 
     def on_clear_clicked(self, widget):
+        l=LCD()
         start = self.textbuffer.get_start_iter()
         end = self.textbuffer.get_end_iter()
-        print(self.textbuffer.get_text(start,end,0))
+        l.lcd_multiline(self.textbuffer.get_text(start,end,0))
 
 
 win = TextViewWindow()
