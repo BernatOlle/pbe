@@ -27,7 +27,7 @@ class TextViewWindow(Gtk.Window):
 
         button_clear = Gtk.ToolButton(label="Mostrar en LCD")
         button_clear.connect("clicked", self.on_print_clicked)
-        toolbar.insert(button_clear,9)
+        toolbar.insert(button_clear,200)
 
     def create_textview(self):
         scrolledwindow = Gtk.ScrolledWindow()
