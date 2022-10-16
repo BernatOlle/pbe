@@ -27,12 +27,11 @@ class TextViewWindow(Gtk.Window):
         self.box.pack_start(button_clear,True,True,0)
 
     def create_textview(self):
-        scrolledwindow = Gtk.ScrolledWindow()
-        self.box.pack_start(scrolledwindow, True,True,0)
+ 
 
         self.textview = Gtk.TextView()
         self.textbuffer = self.textview.get_buffer()
-        scrolledwindow.add(self.textview)
+        self.add(self.textview)
 
     def on_print_clicked(self, widget):
         l=LCD()
