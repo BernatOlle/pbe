@@ -17,7 +17,7 @@ class TextViewWindow(Gtk.Window):
         self.add(self.box)
 
         self.create_textview()
-        self.create_toolbar()
+        self.create_button()
 
     def create_button(self):
   
