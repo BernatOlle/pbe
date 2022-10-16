@@ -25,22 +25,19 @@ class TextViewWindow(Gtk.Window):
 
         toolbar.insert(Gtk.SeparatorToolItem(), 8)
 
-        button_clear = Gtk.ToolButton()
-        button_clear.set_icon_name("edit-clear-symbolic")
-        button_clear.connect("clicked", self.on_clear_clicked)
-        toolbar.insert(button_clear, 9)
+        button_clear = Gtk.ToolButton(label="Mostrar en LCD")
+        button_clear.connect("clicked", self.on_print_clicked)
+        toolbar.insert(button_clear)
 
     def create_textview(self):
         scrolledwindow = Gtk.ScrolledWindow()
-        scrolledwindow.set_hexpand(True)
-        scrolledwindow.set_vexpand(True)
         self.box.pack_start(scrolledwindow, True,True,0)
 
         self.textview = Gtk.TextView()
         self.textbuffer = self.textview.get_buffer()
         scrolledwindow.add(self.textview)
 
-    def on_clear_clicked(self, widget):
+    def on_print_clicked(self, widget):
         l=LCD()
         start = self.textbuffer.get_start_iter()
         end = self.textbuffer.get_end_iter()
