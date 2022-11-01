@@ -1,11 +1,7 @@
 import gi
-
 gi.require_version("Gtk", "3.0")
 from puzzle1 import LCD
 from gi.repository import Gtk, Pango, Gdk
-import time
-
-
 
 class TextViewWindow(Gtk.Window):
     def __init__(self):
@@ -15,12 +11,9 @@ class TextViewWindow(Gtk.Window):
         self.box1 = Gtk.Box(orientation="vertical", spacing=4)
         self.add(self.box1)
 
-        
         self.textview = Gtk.TextView()
         self.textbuffer = self.textview.get_buffer()
-        self.box1.pack_start(self.textview,True,True,0)
-        
-                
+        self.box1.pack_start(self.textview,True,True,0)              
 
         button = Gtk.Button(label="Display")
         button.connect("clicked", self.on_print_clicked)
@@ -40,23 +33,11 @@ class TextViewWindow(Gtk.Window):
          }
             
         """
-        
-        self.blue2 = b"""
-        
-        #button{
-            background-color: #d5f6f7;
-            font-family:monospace;
-            color: #FFFFFF;
-            }
-        """
-            
-        
         self.css_provider = Gtk.CssProvider()
         self.css_provider.load_from_data(self.blue)
         self.context = Gtk.StyleContext()
         self.screen = Gdk.Screen.get_default()
         self.context.add_provider_for_screen(self.screen, self.css_provider , Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
-
 
     def on_print_clicked(self, widget):
         l=LCD()
@@ -64,11 +45,6 @@ class TextViewWindow(Gtk.Window):
         end = self.textbuffer.get_end_iter()
         l.lcd_multiline(self.textbuffer.get_text(start,end,0))
         self.textbuffer.set_text("")
-
-        
-        
-    
-
 
 win = TextViewWindow()
 win.connect("destroy", Gtk.main_quit)
