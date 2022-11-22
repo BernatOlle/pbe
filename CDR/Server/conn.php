@@ -56,7 +56,7 @@
 
             $filtres=explode("&",$query);
              $i=0;
-            while($filtres[$i] && !str_contains($filtres[$i],'limit')){
+            while(!empty($filtres[$i]) && !str_contains($filtres[$i],'limit')){
                 if($i==0){
                     $sql=$sql."WHERE ";
                 }
