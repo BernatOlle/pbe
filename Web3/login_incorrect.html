@@ -5,20 +5,22 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Atenea</title>
 	 <link rel="shortcut icon" href="favicon.ico" />
-	    <!-- Connexio amb el document css -->
-	<link rel="stylesheet" href="style.css">
+   <!-- Connexio amb el document css -->
+	<link rel="stylesheet" href="style_incor.css">
 </head>
 <body>
 	<form class="login-form" method="post" action="login.php">
 	<div class="contenedor">
 			<h5>Welcome to Course Manager </h5>
-			  <!-- Input per posar el username -->
+			<!-- Missatge contraseña incorrecte  -->
+      <h4>Contrasenya incorrecta </h4>
+      <!-- Input per posar el username -->
 			<label> Username</label>
 			<input class="controls" type="text" name="username" placeholder="Username">
-			<!-- Input per posar la contrasenya -->
+      <!-- Input per posar la contrasenya -->
 			<label> Password</label>
 			<input class="controls" type="password" name="password" placeholder="Password">
-			<!-- Boto login -->
+      <!-- Boto login -->
 			<input class="button" type="submit" value="Login" name="Login"></input>
 		</div>
 	</form>

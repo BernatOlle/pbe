@@ -83,7 +83,6 @@ if (isset($_POST['send'])){
         if(str_contains($filtres[$i],'limit')){
             $filtres2=explode("=",$filtres[$i]);
             $sql.= " LIMIT ".$filtres2[1];
-            //echo $sql;
         }
         if(mysqli_query($conn,$sql)){
         $result=mysqli_query($conn,$sql);
@@ -96,15 +95,19 @@ if (isset($_POST['send'])){
           echo ("ERROR A LA BUSQUEDA");
           header ("Location: \Web3\principal.php ");
         }
+
     $_SESSION['S_taula']=$taula;
     $_SESSION['S_files']=$j;
+    //buuidem el Buscador
     $_POST['Buscador']="";
     $json_result= json_encode($array, 128);
     $_SESSION['S_result']= $json_result;
+    //redirigim a la pagina principal
     header ("Location: \Web3\principal.php ");
   }
 }
 }else{
+  //redirigim a la pagina principal
   header ("Location: \Web3\principal.php ");
 }
 

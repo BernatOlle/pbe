@@ -1,34 +1,36 @@
 import gi
 import threading
-import time
 import requests
 import json
+from httprequest import httprequest
+from rfidreader import RfidReader
 from puzzle1 import Rfid_RC522
-from LCD import LCD
+#from LCD import LCD
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
-from gi.repository import Gdk
+from gi.repository import Gdk 
 from gi.repository import GLib
 from threading import Timer, Thread
-reader= Rfid_RC522()
-l=LCD()
+#l=LCD()
+httprequest= httprequest()
 
 class MyWindow(Gtk.Window):
-    def __init__(self):
-        window= super().__init__(title="window.py")
+    def _init_(self):
+        window= super()._init_(title="window.py")
         self.set_default_size(600,500)
         self.set_border_width(10)
         
-        self.DOMAIN1='http://169.254.207.20/server_uid.php'
-        self.DOMAIN2='http://169.254.207.20/conn.php'
+        self.DOMAIN1='http://169.254.207.20/pbe/server_uid.php'
+        self.DOMAIN2='http://169.254.207.20/pbe/filtres.php'
         self.SESSION_TIME=300
         
         self.stack= Gtk.Stack()
         self.new_pantalla1()
         self.new_pantalla2()
         
-        self.pantalla1()
+        #self.pantalla1()
+        self.stack.set_visible_child(self.grid1)
         self.add(self.stack)
         
         #Use CSS for style
@@ -80,53 +82,41 @@ class MyWindow(Gtk.Window):
         
         #Add our grid to the stack
         self.stack.add_named(self.grid2, "grid2")
-  
-    #Reads the scanned uid and returns its value on screen    
-    #Adds the function to the idle, to be called when there are not pending events
-    def read_uid(self):
-        self.uid=reader.read_uid()
-        print(self.uid)
-
-        query=""
-        #Call the server by sending the uid obtained
-        self.start_thread_server(self.uid_to_server,self.uid,query)
         
-    #Start a thread
-    def start_thread_uid(self,function):
-        thread= threading.Thread(target=function)
-        thread.setDaemon(True)
-        self.thread_use=True
-        thread.start()
-    
     #Visualize pantalla1
     def pantalla1(self):
         self.stack.set_visible_child(self.grid1)
-        self.start_thread_uid(self.read_uid)
-        l.lcd_multiline('Please, login with \nyour university card')
-    
+        #l.lcd_multiline('Please, login with \nyour university card')
+        rfid.read_uid()
+            
     #Visualize pantalla2
     def pantalla2(self):
+        print(self.user)
         self.label_welcome.set_text("Welcome "+self.user)
-        l.lcd_multiline('Welcome\n '+self.user)
-        self.query.connect("activate", self.get_table, self.uid)
+        #l.lcd_multiline('Welcome\n '+self.user)
+        self.query.connect("activate", self.on_query, self.uid)
         self.stack.set_visible_child(self.grid2)
         self.start_timer()
+
+   #Dubte 
+    def on_tag(self,reader,uid):
+        self.uid = uid
+        url=self.DOMAIN1+'/'+uid
+        httprequest.get(url,self.on_unknown)
+
+    #Dubte
+    def on_unknown(self, user):
+        self.user=user['Username']
+        if self.user=="ERROR":
+            self.dialog_error()
+        else:
+            self.pantalla2()
         
     def logout(self,widget=None):
-        GLib.idle_add(self.pantalla1())
         self.timer.cancel()
-        self.grid2.remove(self.scrollable_treelist)
-        
-     
-    #SERVER
-    def uid_to_server(self, uid, query):
-        #Query not used
-        self.user= self.server_uid(uid)
-        #self.user="Arnau"
-        if self.user=="ERROR":
-            GLib.idle_add(self.dialog_error)
-        else:
-            GLib.idle_add(self.pantalla2)
+        self.grid2.remove_row(3)
+        window.show_all()
+        self.pantalla1()
         
     
     def dialog_error(self):
@@ -141,49 +131,27 @@ class MyWindow(Gtk.Window):
         dialog.format_secondary_text("Sorry for the inconvenience. Please try again.")
         dialog.run()
         dialog.destroy()
-        GLib.idle_add(self.pantalla1)
+        self.pantalla1()
     
-    #Start a thread
-    def start_thread_server(self,function,uid,query):
-        thread= threading.Thread(target=function, args=(uid,query))
-        thread.setDaemon(True)
-        self.thread_use=True
-        thread.start()
-    
-    def server_uid(self,uid):
-        r = requests.get(self.DOMAIN1+'/'+uid)                                   
-        r.raise_for_status()
-        print("Conexio")
-        username=r.json()["Username"]
-        print("Username")
-        return username
-    
-    def server_query(self,uid,query):
-        link= self.DOMAIN2+'/'+uid+'/'+query
-        r = requests.get(link)
-        print(r.text)
-        r.raise_for_status()                                             
-        return r.json()
-    
-    def table_return(self,uid,query):
-        self.table= self.server_query(uid,query)
-        GLib.idle_add(self.print_table(self.table))
-    
-    def get_table(self, query, uid):
+    def on_query(self, query, uid):
         #x=[{"day":"Tue","hour":"08:00:00","subject":"TD","room":"A4-105"},{"day":"Tue","hour":"10:00:00","subject":"PSAVC","room":"A4-105"},{"day":"Tue","hour":"11:00:00","subject":"DSBM","room":"A4-105"},{"day":"Tue","hour":"12:00:00","subject":"RP","room":"A4-105"},{"day":"Wed","hour":"08:00:00","subject":"Lab PB","room":"C4-105"},{"day":"Thu","hour":"08:00:00","subject":"PBE","room":"A4-105"},{"day":"Thu","hour":"10:00:00","subject":"TD","room":"A4-105"}]
         #x=json.dumps([{'Name': '5', 'Age': '6'},{'Name': '10', 'Age': '14'}], separators=(',', ':'))
+        
         text= query.get_text()
+        query.set_text("");
+        
         t=text.split("?")
         if t[0]=='timetables'or t[0]=='marks'or t[0]=='tasks':
             self.label_title.set_text(t[0])
         
         self.timer.cancel()
         self.start_timer()
-        self.start_thread_server(self.table_return,uid,text)
+        url= self.DOMAIN2+'/'+uid+'/'+text
+        httprequest.get(url, self.on_result)
         print("Query")
 
   
-    def print_table(self,table):
+    def on_result(self,table):
         #obtain the name of columns
         nom_col=[]
         print(table[0])
@@ -229,7 +197,7 @@ class MyWindow(Gtk.Window):
             
 window= MyWindow()
 window.connect("destroy", Gtk.main_quit)
+rfid= RfidReader(Rfid_RC522(), window.on_tag)
+rfid.read_uid()
 window.show_all()
 Gtk.main()
-
-
