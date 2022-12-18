@@ -39,10 +39,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        edtUsuario = findViewById(R.id.txtUser);
-        edtPassword = findViewById(R.id.txtPass);
-        edtHost = findViewById(R.id.txtHost);
-        btnLogin = findViewById(R.id.bLogin);
+        edtUsuario = findViewById(R.id.txtUser);//Username value
+        edtPassword = findViewById(R.id.txtPass);//Password value
+        edtHost = findViewById(R.id.txtHost); //Host value
+        btnLogin = findViewById(R.id.bLogin); //Login button
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,12 +53,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void validarUsuario() {
+        //Get the text from each variable to validate the user
         String host = edtHost.getText().toString();
         String user = edtUsuario.getText().toString();
         String pass = edtPassword.getText().toString();
-        String link = "http://192.168.1.138/App/login.php/"+user+"/"+pass;
-        Request request = new Request.Builder().url(link).build();
+        String link = "http://192.168.1.138/App_php/login.php/"+user+"/"+pass;//Create the link to make the request to the server with the obtained data
+        Request request = new Request.Builder().url(link).build();//Request to the server
 
+        //Create and enqueue the call for the request
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
@@ -70,12 +72,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 try {
-                    JSONObject json = new JSONObject(Objects.requireNonNull(response.body()).string());
+                    JSONObject json = new JSONObject(Objects.requireNonNull(response.body()).string()); //Create a JSONObject with the response given
+                    // Validate the response and call the function login
                     if (json.getString("Username").equals("ERROR")) {
-                        login(user, link, "",true);
+                        login(user, link, "",true); //Call the function login with the boolean error set to true
                     } else {
 
-                        login(user, link,json.getString("idEstudiant"), false);
+                        login(user, link,json.getString("idEstudiant"), false); //Call the function login with the boolean error set to false and the information
                     }
 
 
@@ -91,15 +94,14 @@ public class MainActivity extends AppCompatActivity {
     public void login(String user, String link,String id ,@NonNull Boolean error){
         if(error){
 
-
-            MainActivity.this.runOnUiThread(()->Toast.makeText(MainActivity.this, "Usuario o contrasenya incorrecta", Toast.LENGTH_SHORT).show());
+            MainActivity.this.runOnUiThread(()->Toast.makeText(MainActivity.this, "Usuario o contrasenya incorrecta", Toast.LENGTH_SHORT).show()); //Show on screen the error in the login
         }
         else {
-            Intent intent = new Intent(MainActivity.this, PrincipalActivity.class);
-            intent.putExtra("user", user);
-            intent.putExtra("id", id);
-            intent.putExtra("url", link);
-            startActivity(intent);
+            Intent intent = new Intent(MainActivity.this, PrincipalActivity.class); //Create an intent related to our PrincipalActivity
+            intent.putExtra("user", user); //Add username to the intent
+            intent.putExtra("id", id); //Add id to the intent
+            intent.putExtra("url", link); //Add the url to the intent
+            startActivity(intent); //Start a new activity with the created intent
             MainActivity.this.runOnUiThread(()->Toast.makeText(MainActivity.this, user.toString(), Toast.LENGTH_SHORT).show());
         }
     }

@@ -20,15 +20,14 @@
 
     <TextView
         android:id="@+id/welcome"
-        android:layout_width="79dp"
-        android:layout_height="39dp"
-        android:layout_marginStart="54dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="4dp"
+        android:layout_width="127dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="252dp"
         android:text="Welcome: "
-        android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/userID"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:textSize="23sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,11 +35,13 @@
         android:id="@+id/userID"
         android:layout_width="176dp"
         android:layout_height="35dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="203dp"
         android:text="TextView"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/logout"
+        android:textSize="23sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -69,7 +70,7 @@
         android:id="@+id/tableD"
         android:layout_width="368dp"
         android:layout_height="397dp"
-        android:layout_marginStart="21dp"
+        android:layout_marginStart="14dp"
         android:layout_marginTop="296dp"
         android:layout_marginEnd="22dp"
         app:layout_constraintEnd_toEndOf="parent"
