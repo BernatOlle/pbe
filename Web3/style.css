@@ -1,0 +1,118 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body{
+  font-family: georgia;
+  background-image: url('login-background.jpeg');
+  background-position: center;
+  background-size: cover;
+  height: 500px;
+}
+
+
+.contenedor {
+  width: 400px;
+  height: 300px;
+  background-color: rgba(255,255,255,0.7);
+  margin: auto;
+  margin-top: 180px;
+  padding: 20px 30px;
+  color: black;;
+}
+
+.contenedor2 {
+  width: 600px;
+  height: 500px;
+  background-color: rgba(255,255,255,0.7);
+  margin: auto;
+  margin-top: 180px;
+  padding: 20px 30px;
+  color: black;;
+}
+
+.button2{
+  width: 70px;
+  height: 20px;
+  float: right;
+  font-size: 14px;
+  font-weight: bold;
+  background: #afc3ff;
+}
+
+.contenedor h5 {
+  margin: 0;
+  color: black;
+  text-align: center;
+  height: 40px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid;
+  font-size: 20px;
+
+}
+
+
+.controls{
+  width: 100%;
+  border: 1px solid white;
+  margin-bottom: 15px;
+  padding: 7px 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.button {
+  width:  100%;
+  height: 40px;
+  background: #3e6df8;
+  color: white;
+  border: none;
+  margin-bottom: 16px;
+
+}
+
+.labels{
+  width: 100%;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 17px;
+  font-weight: bold;
+
+
+}
+
+.button:hover {
+    background: #afc3ff;
+}
+
+.divi{
+  height: 50px;
+}
+.columna1{
+  height: 100%;
+  width: 85%;
+  float: left;
+}
+.botons{
+  height: 100%;
+  width: 15%;
+  float: right;
+}
+
+.taula{
+  height: 100%;
+  width:100%;
+  border-collapse:  separate;
+  background-color: white;
+}
+
+.columnas{
+  text-align: center;
+}
+
+.titol{
+  /*font-weight: bold;*/
+  color: red;
+
+}
